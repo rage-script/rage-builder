@@ -1,0 +1,21 @@
+body{
+    background-color: transparent;
+}
+
+.sticky {
+    background: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.default-list{
+    height: 100%;
+    width: 350px;
+    padding: 20px 10px;
+}
+
+.selector-list{
+    height: 85%;
+    overflow-y: scroll;
+}
