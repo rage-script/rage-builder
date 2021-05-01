@@ -33,6 +33,7 @@ let selectedObject = false;
 let mapsList = [];
 
 let idleCameraTimer = false;
+let previewTimer = false;
 
 mp.events.add('render', () => {
     if(!isEditorStarted) return;
@@ -120,16 +121,16 @@ mp.events.add("client:objectPreview", (modelName) => {
     }
 
     previewObject = mp.objects.new( mp.game.joaat( modelName ), new mp.Vector3(position.x + xyOffset, position.y + xyOffset, position.z + zOffset - 5) );
-    mp.events.add('render', rotatePreviewObject);
     previewCamera.setCoord(position.x, position.y, position.z + zOffset);
     previewCamera.setActive(true);
     previewCamera.pointAtCoord(position.x + xyOffset, position.y + xyOffset, position.z + zOffset - 5);
     mp.game.cam.renderScriptCams(true, false, 0, true, false);
+    startPreviewRotation();
 });
 
 mp.events.add("client:exitPreview", () => {
     previewCamera.setActive(false);
-    mp.events.remove('render', rotatePreviewObject);
+    stopPreviewRotation();
     if(previewObject){
         previewObject.destroy();
         previewObject = false;
@@ -137,10 +138,22 @@ mp.events.add("client:exitPreview", () => {
     mp.game.cam.renderScriptCams(false, false, 0, true, false);
 });
 
+function startPreviewRotation(){
+    if(previewTimer){
+        stopPreviewRotation();
+    }
+    previewTimer = setInterval(rotatePreviewObject, 20);
+}
+
+function stopPreviewRotation(){
+    clearInterval(previewTimer);
+    previewTimer = false;
+}
+
 function rotatePreviewObject(){
     if (!previewObject) return;
     const { rotation } = previewObject;
-    previewObject.rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z + 0.1);
+    previewObject.rotation = new mp.Vector3(rotation.x, rotation.y, rotation.z + 0.7);
 }
 
 
