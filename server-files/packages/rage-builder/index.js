@@ -47,6 +47,10 @@ mp.events.add("server:mapNew", () => {
     reloadMaps();
 });
 
+mp.events.add("server:exitBuilder", () => {
+    reloadMaps();
+});
+
 function mapOpen(player, mapName){
     fs.readFile( __dirname + `/../rage-builder-maps/${mapName}.json`, 'utf8', function(err,data){
         if(err){

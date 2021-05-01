@@ -200,6 +200,7 @@ mp.events.add("client:requestExit", () => {
     mp.keys.unbind(CHANGE_EDITOR_MODE_BUTTON, true, changeMode);
     killIdleCameraTimer();
     mp.game.graphics.notify('~g~Rage Builder ~w~closed');
+    mp.events.callRemote('server:exitBuilder' );
 });
 
 mp.events.add("client:requestMapOpen", (_mapName) => {
