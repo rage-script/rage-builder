@@ -113,18 +113,23 @@ mp.events.add("client:elementFocus", (elementId) => {
 
 mp.events.add("client:objectPreview", (modelName) => {
     const { position } = localPlayer;
-    const zOffset = 800;
-    const xyOffset = 15;
+    const mapOffset = 2000;
+    const minOffset = 3;
+    const { min, max } = mp.game.gameplay.getModelDimensions( mp.game.joaat( modelName ) );
+    const xOffset = max.x - min.x + minOffset;
+    const yOffset = max.y - min.y + minOffset;
+    const zOffset = max.z - min.z + minOffset;
 
     if(previewObject){
         previewObject.destroy();
     }
 
-    previewObject = mp.objects.new( mp.game.joaat( modelName ), new mp.Vector3(position.x + xyOffset, position.y + xyOffset, position.z + zOffset - 5) );
-    previewCamera.setCoord(position.x, position.y, position.z + zOffset);
+    previewObject = mp.objects.new( mp.game.joaat( modelName ), new mp.Vector3(position.x + xOffset, position.y + yOffset, position.z + mapOffset - zOffset) );
+    previewCamera.setCoord(position.x, position.y, position.z + mapOffset);
     previewCamera.setActive(true);
-    previewCamera.pointAtCoord(position.x + xyOffset, position.y + xyOffset, position.z + zOffset - 5);
+    previewCamera.pointAtCoord(position.x + xOffset, position.y + yOffset, position.z + mapOffset - zOffset);
     mp.game.cam.renderScriptCams(true, false, 0, true, false);
+    
     startPreviewRotation();
 });
 

@@ -1,7 +1,5 @@
-
 function highlightEntity(selectedObject){
-            const dimension = mp.game.gameplay.getModelDimensions( selectedObject.getModel() );
-            const { min, max } = dimension;
+            const { min, max } = mp.game.gameplay.getModelDimensions( selectedObject.getModel() );
             const { position } = selectedObject;
 
             const TOP_1 = {x: position.x + min.x,y: position.y + min.y, z: position.z + max.z};
