@@ -102,3 +102,9 @@ $( "#form-new-map-name" ).submit(function( event ) {
     mp.events.call('client:requestMapSave', name);
     event.preventDefault();
 });
+
+
+$("#search-form").submit(function( event ) {
+    elementsList.search( $('#search-term').val().toLowerCase() );
+    event.preventDefault();
+});

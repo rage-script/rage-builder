@@ -3,12 +3,15 @@ class DefaultList{
     constructor(pagination){
         this.pagination = pagination;
         this.current = false;
+        this.searchResults = false;
         this.init();
     }
 
     update(title, elements, pickCallback, submitCallback){
         $('.default-list-title').text(title);
         this.elements = elements;
+        this.searchResults = false;
+
         this.pick = (elementId, elementName) => {
             this.current = elementName;
             pickCallback(elementId, elementName);
@@ -39,7 +42,9 @@ class DefaultList{
     render(){
         $('.default-list-body').html('');
         const self = this;
-        this.pagination.list(this.elements).forEach( (element, id) => {
+        const elements = this.searchResults ? this.searchResults : this.elements;
+
+        this.pagination.list(elements).forEach( (element, id) => {
             var button = document.createElement('button');
             button.type="button";
             button.classList.add('list-group-item', 'list-group-item-action');
@@ -59,4 +64,12 @@ class DefaultList{
         $('.default-list').css('display', 'none');
         mp.events.call('client:exitPreview');
     }
+
+    search(term){
+        this.searchResults = this.elements.filter(s => s.includes( term ));
+        this.pagination.update(this.searchResults.length, () => {
+            this.render();
+        });
+    }
+
 }
