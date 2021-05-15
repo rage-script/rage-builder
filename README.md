@@ -21,6 +21,8 @@ Move the contents of the server-files folder to the your server folder
 
 `Ctrl` - Rotate object. Hold this key and press object move keys (W,S - rotate X-axis, A,S - rotate Y-axis and PageUp, PageDown - rotate Z-axis ). 
 
+`Delete` - Delete currently selected Object (Select mode only)
+
 ## Map saving
 Pick map name and save it by clicking on the `save` icon in top menu. All maps are saved in json format in the `rage-builder-maps` folder.
 

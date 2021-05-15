@@ -80,6 +80,7 @@ mp.events.add("cef:showNewMapIgnoreUnsavedDialog", () => {
     $('#dialog-new-map-ignore-unsaved').modal('show');
 });
 
+
 function exitMapEditor(){
     mp.events.call('client:requestExit', true);
     mapElements = [];
@@ -96,6 +97,10 @@ function addMapElement(id, elementModel){
     mapElements[id] = elementModel;
 }
 
+function deleteMapElement(id){
+    mapElements.splice(id, 1);
+}
+
 $( "#form-new-map-name" ).submit(function( event ) {
     const name = $('#new-map-name').val();
     $('#dialog-new-map-name').modal('hide');
@@ -108,3 +113,13 @@ $("#search-form").submit(function( event ) {
     elementsList.search( $('#search-term').val().toLowerCase() );
     event.preventDefault();
 });
+
+
+mp.events.add("cef:showObjectDeleteDialog", () => {
+    $('#dialog-object-delete-confirm').modal('show');
+});
+
+function confirmObjectDelete(){
+    $('#dialog-object-delete-confirm').modal('hide');
+    mp.events.call('client:confirmObjectDelete', true);
+}

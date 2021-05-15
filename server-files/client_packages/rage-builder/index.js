@@ -30,6 +30,8 @@ let mapObjects = new Array();
 let mapName = false;
 let selectedObject = false;
 
+const KEY_DELETE = 46; // Delete
+
 let mapsList = [];
 
 let idleCameraTimer = false;
@@ -41,6 +43,7 @@ mp.events.add('render', () => {
     if(currentMode == MODE_FLY){
         freecamFrameProcess();
     } else if( currentMode == MODE_SELECT) {
+        processDeleteKey();
         renderModeSelect();
     }
 
@@ -129,7 +132,7 @@ mp.events.add("client:objectPreview", (modelName) => {
     previewCamera.setActive(true);
     previewCamera.pointAtCoord(position.x + xOffset, position.y + yOffset, position.z + mapOffset - zOffset);
     mp.game.cam.renderScriptCams(true, false, 0, true, false);
-    
+
     startPreviewRotation();
 });
 
@@ -312,4 +315,30 @@ function suppressIdleCamera(){
 function killIdleCameraTimer(){
     clearInterval(idleCameraTimer);
     idleCameraTimer = false;
+}
+
+mp.events.add('client:confirmObjectDelete', () => {
+    deleteObject(selectedObject);
+});
+
+function processDeleteKey(){
+    if(mp.keys.isDown(KEY_DELETE) === true){
+        if(!selectedObject) return mp.game.graphics.notify("~r~ERROR: Object was not selected");
+        return browser.call('cef:showObjectDeleteDialog');
+    }
+}
+
+function deleteObject(object){
+    if( selectedObject == object){
+        selectedObject = false;
+    }
+
+    mapObjects.forEach( (value, index) => {
+       if(value == object){
+           mapObjects.splice(index, 1);
+           browser.execute(`deleteMapElement('${index}')`);
+       }
+    });
+
+    object.destroy();
 }
