@@ -1,6 +1,6 @@
 /**
  * Author: Lev Angel
- * Website: https://rage-script.ru
+ * Website: https://rage-script.com
  *
  * Copyright (C) 2021 Lev Angel - All Rights Reserved
  * You may use, distribute and modify this code under the
