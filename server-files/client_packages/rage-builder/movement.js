@@ -17,8 +17,9 @@ const SPEED_NORMAL = 1;
 const SPEED_SLOW = 0.15;
 const SPEED_FAST = 4;
 
+const freecam = exports;
 
-function freecamToggle(){
+freecam.toggle = function(){
     isEnabled = !isEnabled;
     localPlayer.setInvincible(isEnabled);
     localPlayer.freezePosition(isEnabled);
@@ -26,17 +27,17 @@ function freecamToggle(){
     localPlayer.setCollision(!isEnabled, !isEnabled);
 }
 
-function freecamPause(){
+freecam.pause = function(){
     if (!isEnabled) return;
     isPaused = true;
 }
 
-function freecamUnpause(){
+freecam.unpause = function(){
     if (!isEnabled) return;
     isPaused = false;
 }
 
-function freecamFrameProcess(){
+freecam.frameProcess = function(){
     if( !isEnabled  || isPaused) return;
 
     let { position } = localPlayer;
@@ -82,7 +83,7 @@ function movementGetSpeed(){
     return SPEED_NORMAL;
 }
 
-function elementMoveFrameProcess(selectedObject){
+freecam.elementMoveFrameProcess = function(selectedObject){
     const is_rotating = mp.keys.isDown(KEY_ROTATE);
 
     return is_rotating ? rotateObject(selectedObject) : moveObject(selectedObject);

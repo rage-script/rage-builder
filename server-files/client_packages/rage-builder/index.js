@@ -7,8 +7,8 @@
  * terms of the MIT license.
  */
 
-require('./rage-builder/functions.js');
-require('./rage-builder/movement.js');
+const { highlightEntity } = require('./rage-builder/functions.js');
+const freecam = require('./rage-builder/movement.js');
 
 const CHANGE_EDITOR_MODE_BUTTON = 0x71; // F2
 
@@ -41,7 +41,7 @@ mp.events.add('render', () => {
     if(!isEditorStarted) return;
 
     if(currentMode == MODE_FLY){
-        freecamFrameProcess();
+        freecam.frameProcess();
     } else if( currentMode == MODE_SELECT) {
         processDeleteKey();
         renderModeSelect();
@@ -56,7 +56,7 @@ function renderModeSelect(){
     highlightEntity(selectedObject);
 
     if (currentMode == MODE_SELECT){
-        elementMoveFrameProcess(selectedObject);
+        freecam.elementMoveFrameProcess(selectedObject);
     }
 }
 
@@ -71,7 +71,7 @@ mp.events.add("playerStartMapEditor", (_mapsList) => {
 
     mapsList = _mapsList;
 
-    freecamToggle();
+    freecam.toggle();
     suppressIdleCamera();
     mp.keys.bind(CHANGE_EDITOR_MODE_BUTTON, true, changeMode);
     isEditorStarted = true;
@@ -98,11 +98,11 @@ function changeMode(){
     if (currentMode == MODE_FLY){
         browser.call('cef:setCursorVisible', true);
         currentMode = MODE_SELECT;
-        freecamPause();
+        freecam.pause();
     } else if (currentMode == MODE_SELECT){
         browser.call('cef:setCursorVisible', false);
         currentMode = MODE_FLY;
-        freecamUnpause();
+        freecam.unpause();
     }
 }
 
@@ -213,7 +213,7 @@ mp.events.add("client:requestNewMap", (ignoreUnsaved = false) => {
 
 mp.events.add("client:requestExit", () => {
     clearMap();
-    freecamToggle();
+    freecam.toggle();
     browser.call('cef:setCursorVisible', false);
     browser.active = false;
     isEditorStarted = false;

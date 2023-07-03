@@ -1,4 +1,6 @@
-function highlightEntity(selectedObject){
+const functions = exports;
+
+functions.highlightEntity = function(selectedObject){
             const { min, max } = mp.game.gameplay.getModelDimensions( selectedObject.getModel() );
             const { position } = selectedObject;
 
